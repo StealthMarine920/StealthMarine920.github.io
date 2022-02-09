@@ -1,0 +1,19 @@
+.content{
+    width: 600px;
+    margin: 0 auto;
+}
+.content a{
+    color: white;
+}
+.hello_world{
+    background-color:#73749A; 
+    color: white; 
+    line-height: 40px; 
+    height: 40px;  
+    padding-left: 3px; 
+    margin-bottom: 8px;
+}
+
+.hello_world a{
+    background-color: #73749A;
+}
