@@ -1,0 +1,12 @@
+.hello_world{
+    background-color:#0066cc; 
+    color: white; 
+    line-height: 40px; 
+    height: 40px;  
+    padding-left: 3px; 
+    margin-bottom: 8px;
+}
+
+.hello_world .box{
+    background-color: #0066cc;
+}
