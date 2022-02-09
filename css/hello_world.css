@@ -4,8 +4,10 @@
     text-align: center;
     height: 256px;
     width: 256px;
-    margin: 0px auto;
     border-radius: 50%;
+    position:absolute;
+    left: calc(50% - 128px);
+    top: calc(50% - 128px);
 
     animation:rotate 3s linear infinite;
     -webkit-animation:rotate 3s linear infinite;
@@ -13,14 +15,44 @@
 
 @keyframes rotate
 {
-    0% {transform:rotate(0deg);background-color:#06f;font-size: 10pt; }
-    50% {transform:rotate(180deg);background-color:#f60;font-size: 30pt; }
-    100% {transform:rotate(360deg);background-color:#06f;font-size: 10pt; }
+    0% {
+        transform:rotate(0deg);
+        background-color:#000;
+        color:#fff;
+        font-size: 10pt;
+    }
+    50% {
+        transform:rotate(180deg);
+        background-color:#fff;
+        color:#000;
+        font-size: 30pt;
+    }
+    100% {
+        transform:rotate(360deg);
+        background-color:#000;
+        color:#fff;
+        font-size: 10pt;
+    }
 }
  
 @-webkit-keyframes rotate
 {
-    0% {-webkit-transform:rotate(0deg);background-color:#06f;font-size: 10pt; }
-    50% {-webkit-transform:rotate(180deg);background-color:#f60;font-size: 30pt; }
-    100% {-webkit-transform:rotate(360deg);background-color:#06f;font-size: 10pt; }
+    0% {
+        -webkit-transform:rotate(0deg);
+        background-color:#000;
+        color:#fff;
+        font-size: 10pt; 
+    }
+    50% {
+        -webkit-transform:rotate(180deg);
+        background-color:#fff;
+        color:#000;
+        font-size: 30pt;
+    }
+    100% {
+        -webkit-transform:rotate(360deg);
+        background-color:#000;
+        color:#fff;
+        font-size: 10pt; 
+    }
 }
