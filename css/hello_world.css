@@ -1,12 +1,26 @@
 .hello_world{
-    background-color:#0066cc; 
     color: white; 
-    line-height: 40px; 
-    height: 40px;  
-    padding-left: 3px; 
-    margin-bottom: 8px;
+    line-height: 256px; 
+    text-align: center;
+    height: 256px;
+    width: 256px;
+    margin: 0px auto;
+    border-radius: 50%;
+
+    animation:rotate 3s linear infinite;
+    -webkit-animation:rotate 3s linear infinite;
 }
 
-.hello_world .box{
-    background-color: #0066cc;
+@keyframes rotate
+{
+    0% {transform:rotate(0deg);background-color:#06f;font-size: 10pt; }
+    50% {transform:rotate(180deg);background-color:#f60;font-size: 30pt; }
+    100% {transform:rotate(360deg);background-color:#06f;font-size: 10pt; }
+}
+ 
+@-webkit-keyframes rotate
+{
+    0% {-webkit-transform:rotate(0deg);background-color:#06f;font-size: 10pt; }
+    50% {-webkit-transform:rotate(180deg);background-color:#f60;font-size: 30pt; }
+    100% {-webkit-transform:rotate(360deg);background-color:#06f;font-size: 10pt; }
 }
