@@ -1,13 +1,17 @@
-<!DOCTYPE HTML><html>
+<!DOCTYPE HTML>
+<html>
+
 <head>
-	<meta charset="utf-8" />
-	<meta http-equiv="content-type" content="text/html" />
+    <meta charset="utf-8" />
+    <meta http-equiv="content-type" content="text/html" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="Icon" type="image/x-icon" href="assets/favicon.ico" />
     <link href="assets/css/style.css?v=1" rel="stylesheet">
     <link href="assets/css/hello_world.css?v=1" rel="stylesheet">
-	<title>hello world</title>
+    <script src="assets/js/hello_world.js"></script>
+    <title>hello world</title>
 </head>
+
 <body>
     <div class="content">
         <div class="hello_world">
@@ -15,6 +19,107 @@
         </div>
         <div class="circle1"></div>
         <div class="circle2"></div>
+        <canvas id="hello_world_canvas"></canvas>
+        <script>
+            class Point {
+                constructor(x, y) {
+                    this.x = x || 0;
+                    this.y = y || 0;
+                }
+            }
+
+            class Circle {
+                constructor(x, y, r) {
+                    this.centerX = x;
+                    this.centerY = y;
+                    this.radius = r;
+                }
+                GetPointOnCircle(startAngle, angle) {
+                    let x = this.centerX;
+                    let y = this.centerY;
+                    let r = this.radius;
+                    let lth = 360 / angle;
+                    let list = []
+                    for (let i = 0; i < lth; i++) {
+                        list.push(new Point(x + (r * Math.cos((angle * i + startAngle) * Math.PI / 180)),
+                            y + (r * Math.sin((angle * i + startAngle) * Math.PI / 180))))
+                    }
+                    return list
+                }
+            }
+
+            function drawTriangle(x, y, r, rotate, color) {
+                var circle = new Circle(x, y, r);
+                let angle = 120;
+                var path = circle.GetPointOnCircle(rotate, angle);
+
+                ctx.beginPath();
+                ctx.lineWidth = 2
+                ctx.moveTo(path[0].x, path[0].y);
+                for (let i = 1; i < path.length; i++) {
+                    ctx.lineTo(path[i].x, path[i].y);
+                }
+                ctx.closePath();
+                ctx.strokeStyle = color;
+                ctx.stroke();
+            }
+
+            class DrawTriangle{
+                posX
+                posY
+                radius
+                rotate
+                constructor(x,y,ra,ro){
+                    this.posX = x;
+                    this.posY = y;
+                    this.radius = ra;
+                    this.rotate = ro;
+                }
+            }
+            let drawData = [];
+            let startRadius = 50;
+            let startRotation = 0;
+
+            function drawFrame(){
+                ctx.clearRect(0,0,canvas.width,canvas.height);
+                drawData.push(new DrawTriangle(mouseX,mouseY,startRadius,startRotation));
+                startRotation += 4;
+
+                for(let i = 0;i < drawData.length;i++){
+                    drawTriangle(drawData[i].posX, drawData[i].posY, drawData[i].radius, drawData[i].rotate, "rgba(0,0,0,0.5)");
+                    drawData[i].radius -= 5;
+                    drawData[i].rotate += 6;
+                    
+                    if(drawData[i].radius <= 0){
+                        drawData.splice(i,1);
+                    }
+                }
+
+                raf = window.requestAnimationFrame(drawFrame);
+            }
+
+            var canvas = document.getElementById("hello_world_canvas");
+            canvas.width = window.screen.width;
+            canvas.height = window.screen.height;
+            //canvas.width = document.body.clientWidth;
+            //canvas.height = document.body.clientHeight;
+            
+            var ctx = canvas.getContext("2d");
+            
+            let mouseX;
+            let mouseY;
+
+            document.onmousemove = function(e){
+                ev = e || window.event;
+                mouseX = ev.clientX;
+                mouseY = ev.clientY;
+            };
+
+            let raf;
+            drawFrame();
+
+        </script>
     </div>
 </body>
+
 </html>
