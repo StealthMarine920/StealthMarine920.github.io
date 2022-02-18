@@ -47,10 +47,29 @@
                     return list
                 }
             }
+            
+            class Color {
+                r
+                g
+                b
+                a
+                constructor(r,g,b,a){
+                    this.r = r;
+                    this.g = g;
+                    this.b = b;
+                    this.a = a;
+                }
+                RGBA(){
+                    return "rgba(" + this.r + "," + this.g + "," + this.b + "," + this.a + ")";
+                }
+                RGB(){
+                    return "rgb(" + this.r + "," + this.g + "," + this.b + ")";
+                }
+            }
 
             function drawTriangle(x, y, r, rotate, color) {
-                var circle = new Circle(x, y, r);
                 let angle = 120;
+                let circle = new Circle(x, y, r);
                 var path = circle.GetPointOnCircle(rotate, angle);
 
                 ctx.beginPath();
@@ -69,29 +88,34 @@
                 posY
                 radius
                 rotate
-                constructor(x,y,ra,ro){
-                    this.posX = x;
-                    this.posY = y;
-                    this.radius = ra;
-                    this.rotate = ro;
+                color
+                constructor(posX,posY,radius,rotate,color){
+                    this.posX = posX;
+                    this.posY = posY;
+                    this.radius = radius;
+                    this.rotate = rotate;
+                    this.color = color;
                 }
             }
+
             let drawData = [];
             let startRadius = 50;
             let startRotation = 0;
+            let startColor = new Color(0,0,0,1.0);
 
             function drawFrame(){
                 ctx.clearRect(0,0,canvas.width,canvas.height);
-                drawData.push(new DrawTriangle(mouseX,mouseY,startRadius,startRotation));
+                drawData.push(new DrawTriangle(mouseX,mouseY,startRadius,startRotation,startColor));
                 startRotation += 4;
 
-                for(let i = 0;i < drawData.length;i++){
-                    drawTriangle(drawData[i].posX, drawData[i].posY, drawData[i].radius, drawData[i].rotate, "rgba(0,0,0,0.5)");
-                    drawData[i].radius -= 5;
-                    drawData[i].rotate += 6;
+                for(let key in drawData){
+                    drawTriangle(drawData[key].posX, drawData[key].posY, drawData[key].radius, drawData[key].rotate, drawData[key].color.RGBA());
+                    drawData[key].radius -= 3;
+                    drawData[key].rotate += 6;
+                    drawData[key].color = new Color(0,0,0,drawData[key].color.a - 0.05);
                     
-                    if(drawData[i].radius <= 0){
-                        drawData.splice(i,1);
+                    if(drawData[key].radius <= 0){
+                        drawData.splice(key,1);
                     }
                 }
 
