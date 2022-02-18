@@ -1,4 +1,13 @@
+#hello_world_canvas{
+	background:rgba(255,255,255,0);
+	position:fixed;
+	z-index:0;
+	top:0px;
+	left:0px;
+}
+
 .hello_world{
+    z-index:1;
     color: white; 
     background: #000;
     line-height: 256px; 
@@ -7,14 +16,19 @@
     left: calc(50% - 128px);
     top: calc(50% - 128px);
     border-radius: 50%;
-    position:fixed;
+    position:relative;
     cursor: pointer;
     
     animation:size 0.5s linear infinite;
     -webkit-animation:size 0.5s linear infinite;
 }
 
+.hello_world:hover{
+    background:#555;
+}
+
 .hello_world div{
+    font-size:30pt;
     text-align: center;
     cursor: pointer;
     user-select:none;
@@ -22,6 +36,11 @@
 
     animation:rotate 3s ease infinite;
     -webkit-animation:rotate 3s ease infinite;
+}
+
+.hello_world div:hover{
+    animation:none;
+    -webkit-animation:none;
 }
 
 @keyframes rotate
@@ -139,12 +158,4 @@
         top:calc(50% - 400px/2 - 30px);
         opacity: 0;
     }
-}
-
-#hello_world_canvas{
-	background:rgba(255,255,255,0);
-	position:fixed;
-	z-index:1;
-	top:0px;
-	left:0px;
 }
