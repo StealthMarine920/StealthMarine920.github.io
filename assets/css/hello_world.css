@@ -4,6 +4,7 @@
 	z-index:0;
 	top:0px;
 	left:0px;
+    cursor:none;
 }
 
 .hello_world{
@@ -24,7 +25,11 @@
 }
 
 .hello_world:hover{
-    background:#555;
+    background:#333;
+}
+
+.hello_world:active{
+    background:#666;
 }
 
 .hello_world div{
