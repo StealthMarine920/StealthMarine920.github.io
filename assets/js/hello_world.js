@@ -106,8 +106,8 @@ class DrawNormalMouse{
         this.startRotation = startRotation;
         this.startColor = startColor;
     }
-    PushNewByMousePos(mouseX, mouseY){
-        this.drawData.push(new Triangle(mouseX,mouseY,this.startRadius,this.startRotation,this.startColor));
+    PushNewByMousePos(x, y){
+        this.drawData.push(new Triangle(x,y,this.startRadius,this.startRotation,this.startColor));
     }
 }
 
@@ -120,6 +120,9 @@ class DrawPointerMouse{
         this.startRadius = startRadius;
         this.startRotation = startRotation;
         this.startColor = startColor;
+    }
+    PushNewByMousePos(x, y){
+        this.drawData.push(new Triangle(x,y,this.startRadius,this.startRotation,this.startColor));
     }
 }
 
@@ -148,7 +151,7 @@ function drawFrame(){
             }
             break;
         case MouseStatus.pointer:
-            drawPointerMouse.drawData.push(new Triangle(mouseX,mouseY,drawPointerMouse.startRadius,drawPointerMouse.startRotation,drawPointerMouse.startColor));
+            drawPointerMouse.PushNewByMousePos(mouseX,mouseY);
             drawPointerMouse.startRotation += 2;
         
             for(let key in drawNormalMouse.drawData){
