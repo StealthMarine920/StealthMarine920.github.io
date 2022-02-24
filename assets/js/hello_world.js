@@ -44,7 +44,7 @@ class Color {
     }
 }
 
-function drawTriangle(x, y, r, rotate, color) {
+/*function drawTriangle(x, y, r, rotate, color) {
     let angle = 120;
     let circle = new Circle(x, y, r);
     var path = circle.GetPointOnCircle(rotate, angle);
@@ -58,9 +58,9 @@ function drawTriangle(x, y, r, rotate, color) {
     ctx.closePath();
     ctx.strokeStyle = color;
     ctx.stroke();
-}
+}*/
 
-class DrawTriangle{
+class Triangle{
     posX
     posY
     radius
@@ -73,28 +73,102 @@ class DrawTriangle{
         this.rotate = rotate;
         this.color = color;
     }
+    Draw(){
+        let angle = 120;
+        let circle = new Circle(this.posX, this.posY, this.radius);
+        var path = circle.GetPointOnCircle(this.rotate, angle);
+
+        ctx.beginPath();
+        ctx.lineWidth = 2
+        ctx.moveTo(path[0].x, path[0].y);
+        for (let i = 1; i < path.length; i++) {
+            ctx.lineTo(path[i].x, path[i].y);
+        }
+        ctx.closePath();
+        ctx.strokeStyle = this.color.RGBA();
+        ctx.stroke();
+    }
 }
 
-let drawData = [];
-let startRadius = 50;
-let startRotation = 0;
-let startColor = new Color(0,0,0,1.0);
+class MouseStatus{
+    static normal = 0
+    static pointer = 1
+    static click = 2
+}
+
+class DrawNormalMouse{
+    drawData = []
+    startRadius
+    startRotation
+    startColor
+    constructor(startRadius,startRotation,startColor){
+        this.startRadius = startRadius;
+        this.startRotation = startRotation;
+        this.startColor = startColor;
+    }
+    PushNewByMousePos(mouseX, mouseY){
+        this.drawData.push(new Triangle(mouseX,mouseY,this.startRadius,this.startRotation,this.startColor));
+    }
+}
+
+class DrawPointerMouse{
+    drawData = []
+    startRadius
+    startRotation
+    startColor
+    constructor(startRadius,startRotation,startColor){
+        this.startRadius = startRadius;
+        this.startRotation = startRotation;
+        this.startColor = startColor;
+    }
+}
+
+var drawNormalMouse = new DrawNormalMouse(50,0,new Color(0,0,0,1.0));
+var drawPointerMouse = new DrawPointerMouse(50,0,new Color(0,0,0,1.0));
+var mouseStatus = MouseStatus.normal;
 
 function drawFrame(){
     ctx.clearRect(0,0,canvas.width,canvas.height);
-    drawData.push(new DrawTriangle(mouseX,mouseY,startRadius,startRotation,startColor));
-    startRotation += 4;
 
-    for(let key in drawData){
-        drawTriangle(drawData[key].posX, drawData[key].posY, drawData[key].radius, drawData[key].rotate, drawData[key].color.RGBA());
-        drawData[key].radius -= 3;
-        drawData[key].rotate += 6;
-        drawData[key].color = new Color(0,0,0,drawData[key].color.a - 0.05);
+    switch(mouseStatus){
+        case MouseStatus.normal:
+            drawNormalMouse.PushNewByMousePos(mouseX,mouseY);
+            drawNormalMouse.startRotation += 2;
         
-        if(drawData[key].radius <= 0){
-            drawData.splice(key,1);
-        }
+            for(let key in drawNormalMouse.drawData){
+                drawNormalMouse.drawData[key].Draw();
+
+                drawNormalMouse.drawData[key].radius -= 3;
+                drawNormalMouse.drawData[key].rotate += 4;
+                drawNormalMouse.drawData[key].color = new Color(0,0,0,drawNormalMouse.drawData[key].color.a - 0.05);
+                
+                if(drawNormalMouse.drawData[key].radius <= 0){
+                    drawNormalMouse.drawData.splice(key,1);
+                }
+            }
+            break;
+        case MouseStatus.pointer:
+            drawPointerMouse.drawData.push(new Triangle(mouseX,mouseY,drawPointerMouse.startRadius,drawPointerMouse.startRotation,drawPointerMouse.startColor));
+            drawPointerMouse.startRotation += 2;
+        
+            for(let key in drawNormalMouse.drawData){
+                drawNormalMouse.drawData[key].Draw();
+
+                drawNormalMouse.drawData[key].radius -= 3;
+                drawNormalMouse.drawData[key].rotate += 4;
+                drawNormalMouse.drawData[key].color = new Color(0,0,0,drawNormalMouse.drawData[key].color.a - 0.05);
+                
+                if(drawNormalMouse.drawData[key].radius <= 0){
+                    drawNormalMouse.drawData.splice(key,1);
+                }
+            }
+            break;
+        case MouseStatus.click:
+            break;
+        default:
+            break;
     }
+    
 
     raf = window.requestAnimationFrame(drawFrame);
 }
@@ -120,8 +194,14 @@ let raf;
 drawFrame();
 
 $(document).ready(function(){
-    $(".content").mousedown(function(){
+    $(".content").on("mousedown", function(){
         console.log("x:" + mouseX + " y:" + mouseY);
 
+    });
+    $(".hello_world").on("mouseover", function(){
+        mouseStatus = MouseStatus.pointer;
+    });
+    $(".hello_world").on("mouseleave", function(){
+        mouseStatus = MouseStatus.normal;
     });
 });
