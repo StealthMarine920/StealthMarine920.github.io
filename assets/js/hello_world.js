@@ -127,7 +127,7 @@ class DrawPointerMouse{
 }
 
 var drawNormalMouse = new DrawNormalMouse(50,0,new Color(0,0,0,1.0));
-var drawPointerMouse = new DrawPointerMouse(50,0,new Color(0,0,0,1.0));
+var drawPointerMouse = new DrawPointerMouse(1,0,new Color(256,256,256,1.0));
 var mouseStatus = MouseStatus.normal;
 
 function drawFrame(){
@@ -136,51 +136,50 @@ function drawFrame(){
     switch(mouseStatus){
         case MouseStatus.normal:
             drawNormalMouse.PushNewByMousePos(mouseX,mouseY);
-            drawNormalMouse.startRotation += 2;
-        
-            for(let key in drawNormalMouse.drawData){
-                drawNormalMouse.drawData[key].Draw();
-
-                drawNormalMouse.drawData[key].radius -= 3;
-                drawNormalMouse.drawData[key].rotate += 4;
-                drawNormalMouse.drawData[key].color = new Color(0,0,0,drawNormalMouse.drawData[key].color.a - 0.05);
-                
-                if(drawNormalMouse.drawData[key].radius <= 0){
-                    drawNormalMouse.drawData.splice(key,1);
-                }
-            }
             break;
         case MouseStatus.pointer:
             drawPointerMouse.PushNewByMousePos(mouseX,mouseY);
-            drawPointerMouse.startRotation += 2;
-        
-            for(let key in drawNormalMouse.drawData){
-                drawNormalMouse.drawData[key].Draw();
-
-                drawNormalMouse.drawData[key].radius -= 3;
-                drawNormalMouse.drawData[key].rotate += 4;
-                drawNormalMouse.drawData[key].color = new Color(0,0,0,drawNormalMouse.drawData[key].color.a - 0.05);
-                
-                if(drawNormalMouse.drawData[key].radius <= 0){
-                    drawNormalMouse.drawData.splice(key,1);
-                }
-            }
             break;
         case MouseStatus.click:
             break;
         default:
             break;
     }
-    
+
+    drawNormalMouse.startRotation += 2;
+    for(let key in drawNormalMouse.drawData){
+        drawNormalMouse.drawData[key].Draw();
+
+        drawNormalMouse.drawData[key].radius -= 3;
+        drawNormalMouse.drawData[key].rotate += 4;
+        drawNormalMouse.drawData[key].color = new Color(0,0,0,drawNormalMouse.drawData[key].color.a - 0.05);
+        
+        if(drawNormalMouse.drawData[key].radius <= 0){
+            drawNormalMouse.drawData.splice(key,1);
+        }
+    }
+
+    drawPointerMouse.startRotation += 2;
+    for(let key in drawPointerMouse.drawData){
+        drawPointerMouse.drawData[key].Draw();
+
+        drawPointerMouse.drawData[key].radius += 3;
+        drawPointerMouse.drawData[key].rotate += 4;
+        drawPointerMouse.drawData[key].color = new Color(256,256,256,drawPointerMouse.drawData[key].color.a - 0.05);
+        
+        if(drawPointerMouse.drawData[key].radius <= 0){
+            drawPointerMouse.drawData.splice(key,1);
+        }
+    }
 
     raf = window.requestAnimationFrame(drawFrame);
 }
 
 var canvas = document.getElementById("hello_world_canvas");
-canvas.width = window.screen.width;
-canvas.height = window.screen.height;
-//canvas.width = document.body.clientWidth;
-//canvas.height = document.body.clientHeight;
+//canvas.width = window.screen.width;
+//canvas.height = window.screen.height;
+canvas.width = document.body.clientWidth;
+canvas.height = document.body.clientHeight;
 
 var ctx = canvas.getContext("2d");
 
@@ -197,6 +196,10 @@ let raf;
 drawFrame();
 
 $(document).ready(function(){
+    $(window).resize(function() {
+        canvas.width = document.body.clientWidth;
+        canvas.height = document.body.clientHeight;
+    });
     $(".content").on("mousedown", function(){
         console.log("x:" + mouseX + " y:" + mouseY);
 

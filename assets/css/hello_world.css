@@ -1,10 +1,13 @@
+body{
+    cursor:none;
+}
 #hello_world_canvas{
 	background:rgba(255,255,255,0);
-	position:fixed;
-	z-index:0;
+	position:absolute;
+	z-index:1;
 	top:0px;
 	left:0px;
-    cursor:none;
+    pointer-events:none;
 }
 
 .hello_world{
@@ -17,7 +20,7 @@
     left: calc(50% - 128px);
     top: calc(50% - 128px);
     border-radius: 50%;
-    position:relative;
+    position:fixed;
     cursor: pointer;
     
     animation:size 0.5s linear infinite;
