@@ -178,6 +178,7 @@ function drawFrame(){
             let pointerMousePath = pointerMouseCircle.GetPointOnCircle(pointerMouseCircleRotate,120);
             for(let i = 0 ; i < 3 ; i++){
                 drawPointerMouse.PushNewTriangleByMousePos(pointerMousePath[i].x,pointerMousePath[i].y);
+                drawPointerMouse.ChangeDrawDataRotation(i,pointerMouseCircleRotate + 60);
             }
             break;
         case MouseStatus.click:
