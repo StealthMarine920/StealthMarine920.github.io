@@ -21,7 +21,6 @@ body{
     top: calc(50% - 128px);
     border-radius: 50%;
     position:fixed;
-    cursor: pointer;
     
     animation:size 0.5s linear infinite;
     -webkit-animation:size 0.5s linear infinite;
@@ -38,7 +37,6 @@ body{
 .hello_world div{
     font-size:30pt;
     text-align: center;
-    cursor: pointer;
     user-select:none;
     -webkit-user-select:none;
 
