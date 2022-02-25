@@ -73,17 +73,13 @@ class Color {
 }*/
 
 class Triangle{
-    posX
-    posY
-    radius
-    rotate
-    color
-    constructor(posX,posY,radius,rotate,color){
+    constructor(posX,posY,radius,rotate,color,type){
         this.posX = posX;
         this.posY = posY;
         this.radius = radius;
         this.rotate = rotate;
         this.color = color;
+        this.type = type;
     }
     Draw(){
         let angle = 120;
@@ -97,8 +93,8 @@ class Triangle{
             ctx.lineTo(path[i].x, path[i].y);
         }
         ctx.closePath();
-        ctx.strokeStyle = this.color.RGBA();
-        ctx.stroke();
+        ctx[this.type + "Style"] = this.color.RGBA();
+        ctx[this.type]();
     }
 }
 
@@ -111,16 +107,14 @@ class MouseStatus{
 
 class DrawMouse{
     drawData = []
-    startRadius
-    startRotation
-    startColor
-    constructor(startRadius,startRotation,startColor){
+    constructor(startRadius,startRotation,startColor,type){
         this.startRadius = startRadius;
         this.startRotation = startRotation;
         this.startColor = startColor;
+        this.type = type;
     }
     PushNewTriangleByMousePos(x, y){
-        this.drawData.push(new Triangle(x,y,this.startRadius,this.startRotation,this.startColor));
+        this.drawData.push(new Triangle(x,y,this.startRadius,this.startRotation,this.startColor,this.type));
     }
     ChangeDrawData(index,p_x,p_y,p_radius,p_rotate,p_color){
         this.drawData[index].x += p_x;
@@ -153,9 +147,9 @@ class DrawMouse{
     }
 }
 
-var drawNormalMouse = new DrawMouse(50,0,new Color(0,0,0,1.0));
-var drawNormal2Mouse = new DrawMouse(1,0,new Color(256,256,256,1.0));
-var drawPointerMouse = new DrawMouse(10,0,new Color(256,256,256,1.0));
+var drawNormalMouse = new DrawMouse(50,0,new Color(0,0,0,1.0),"stroke");
+var drawNormal2Mouse = new DrawMouse(1,0,new Color(256,256,256,1.0),"stroke");
+var drawPointerMouse = new DrawMouse(10,0,new Color(256,256,256,1.0),"fill");
 var pointerMouseCircleRadius = 50;
 var pointerMouseCircleRotate = 0;
 var pointerMouseTurningFlag = true;
