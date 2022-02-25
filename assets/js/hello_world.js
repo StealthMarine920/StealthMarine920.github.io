@@ -96,7 +96,7 @@ class MouseStatus{
     static click = 2
 }
 
-class DrawNormalMouse{
+class DrawMouse{
     drawData = []
     startRadius
     startRotation
@@ -109,25 +109,13 @@ class DrawNormalMouse{
     PushNewByMousePos(x, y){
         this.drawData.push(new Triangle(x,y,this.startRadius,this.startRotation,this.startColor));
     }
-}
+    ChangeDrawData(index,p_x,p_y,p_radius,p_rotate,p_color){
 
-class DrawPointerMouse{
-    drawData = []
-    startRadius
-    startRotation
-    startColor
-    constructor(startRadius,startRotation,startColor){
-        this.startRadius = startRadius;
-        this.startRotation = startRotation;
-        this.startColor = startColor;
-    }
-    PushNewByMousePos(x, y){
-        this.drawData.push(new Triangle(x,y,this.startRadius,this.startRotation,this.startColor));
     }
 }
 
-var drawNormalMouse = new DrawNormalMouse(50,0,new Color(0,0,0,1.0));
-var drawPointerMouse = new DrawPointerMouse(1,0,new Color(256,256,256,1.0));
+var drawNormalMouse = new DrawMouse(50,0,new Color(0,0,0,1.0));
+var drawPointerMouse = new DrawMouse(1,0,new Color(256,256,256,1.0));
 var mouseStatus = MouseStatus.normal;
 
 function drawFrame(){
