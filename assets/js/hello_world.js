@@ -106,6 +106,7 @@ class MouseStatus{
     static normal = 0
     static pointer = 1
     static click = 2
+    static normal2 = 3
 }
 
 class DrawMouse{
@@ -126,17 +127,38 @@ class DrawMouse{
         this.drawData[index].y += p_y;
         this.drawData[index].radius += p_radius;
         this.drawData[index].rotate += p_rotate;
+        this.CheckRotate(index);
         this.drawData[index].color = new Color(
-            this.drawData[index].color.r + p_color.r, 
-            this.drawData[index].color.g + p_color.g, 
-            this.drawData[index].color.b + p_color.b, 
+            this.drawData[index].color.r + p_color.r,
+            this.drawData[index].color.g + p_color.g,
+            this.drawData[index].color.b + p_color.b,
             this.drawData[index].color.a + p_color.a
-        ); 
+        );
+    }
+    ChangeDrawDataPos(index,n_x,n_y){
+        this.drawData[index].x = n_x;
+        this.drawData[index].y = n_y;
+    }
+    ChangeDrawDataRotation(index,n_r){
+        this.drawData[index].rotate = n_r;
+        this.CheckRotate(index);
+    }
+    CheckRotate(index){
+        if(this.drawData[index].rotate > 360){
+            this.drawData[index].rotate -= 360;
+        }
+        if(this.drawData[index].rotate < -360){
+            this.drawData[index].rotate += 360;
+        }
     }
 }
 
 var drawNormalMouse = new DrawMouse(50,0,new Color(0,0,0,1.0));
-var drawPointerMouse = new DrawMouse(1,0,new Color(256,256,256,1.0));
+var drawNormal2Mouse = new DrawMouse(1,0,new Color(256,256,256,1.0));
+var drawPointerMouse = new DrawMouse(10,0,new Color(256,256,256,1.0));
+var pointerMouseCircleRadius = 50;
+var pointerMouseCircleRotate = 0;
+var pointerMouseTurningFlag = true;
 var mouseStatus = MouseStatus.normal;
 
 function drawFrame(){
@@ -148,8 +170,15 @@ function drawFrame(){
         case MouseStatus.normal:
             drawNormalMouse.PushNewTriangleByMousePos(mouseX,mouseY);
             break;
+        case MouseStatus.normal2:
+            drawNormal2Mouse.PushNewTriangleByMousePos(mouseX,mouseY);
+            break;
         case MouseStatus.pointer:
-            drawPointerMouse.PushNewTriangleByMousePos(mouseX,mouseY);
+            let pointerMouseCircle = new Circle(mouseX,mouseY,pointerMouseCircleRadius,new Color(0,0,0,1.0));
+            let pointerMousePath = pointerMouseCircle.GetPointOnCircle(pointerMouseCircleRotate,120);
+            for(let i = 0 ; i < 3 ; i++){
+                drawPointerMouse.PushNewTriangleByMousePos(pointerMousePath[i].x,pointerMousePath[i].y);
+            }
             break;
         case MouseStatus.click:
             break;
@@ -161,22 +190,38 @@ function drawFrame(){
     for(let key in drawNormalMouse.drawData){
         drawNormalMouse.drawData[key].Draw();
 
-        drawNormalMouse.ChangeDrawData(key,0,0,-3,4, new Color(0,0,0,-0.05));
+        drawNormalMouse.ChangeDrawData(key,0,0,-3,4, new Color(0,0,0,-0.06));
         
         if(drawNormalMouse.drawData[key].radius <= 0){
             drawNormalMouse.drawData.splice(key,1);
         }
     }
 
-    drawPointerMouse.startRotation += 2;
-    for(let key in drawPointerMouse.drawData){
-        drawPointerMouse.drawData[key].Draw();
+    drawNormal2Mouse.startRotation += 2;
+    for(let key in drawNormal2Mouse.drawData){
+        drawNormal2Mouse.drawData[key].Draw();
 
-        drawPointerMouse.ChangeDrawData(key,0,0,3,4, new Color(0,0,0,-0.05));
+        drawNormal2Mouse.ChangeDrawData(key,0,0,3,4, new Color(0,0,0,-0.06));
         
-        if(drawPointerMouse.drawData[key].radius <= 0){
-            drawPointerMouse.drawData.splice(key,1);
+        if(drawNormal2Mouse.drawData[key].radius <= 0){
+            drawNormal2Mouse.drawData.splice(key,1);
         }
+    }
+
+    pointerMouseCircleRotate += 2;
+    for(let key in drawPointerMouse.drawData){
+        drawPointerMouse.drawData[0].Draw();
+        drawPointerMouse.drawData.splice(0,1);
+    }
+    if(pointerMouseCircleRadius >= 40){
+        pointerMouseTurningFlag = true;
+    }else if(pointerMouseCircleRadius <= 10){
+        pointerMouseTurningFlag = false;
+    }
+    if(pointerMouseTurningFlag){
+        pointerMouseCircleRadius -= 1.6;
+    }else{
+        pointerMouseCircleRadius += 1.6;
     }
 
     raf = window.requestAnimationFrame(drawFrame);
