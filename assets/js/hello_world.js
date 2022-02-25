@@ -110,7 +110,16 @@ class DrawMouse{
         this.drawData.push(new Triangle(x,y,this.startRadius,this.startRotation,this.startColor));
     }
     ChangeDrawData(index,p_x,p_y,p_radius,p_rotate,p_color){
-
+        this.drawData[index].x += p_x;
+        this.drawData[index].y += p_y;
+        this.drawData[index].radius += p_radius;
+        this.drawData[index].rotate += p_rotate;
+        this.drawData[index].color = new Color(
+            this.drawData[index].color.r + p_color.r, 
+            this.drawData[index].color.g + p_color.g, 
+            this.drawData[index].color.b + p_color.b, 
+            this.drawData[index].color.a + p_color.a
+        ); 
     }
 }
 
@@ -138,9 +147,7 @@ function drawFrame(){
     for(let key in drawNormalMouse.drawData){
         drawNormalMouse.drawData[key].Draw();
 
-        drawNormalMouse.drawData[key].radius -= 3;
-        drawNormalMouse.drawData[key].rotate += 4;
-        drawNormalMouse.drawData[key].color = new Color(0,0,0,drawNormalMouse.drawData[key].color.a - 0.05);
+        drawNormalMouse.ChangeDrawData(key,0,0,-3,4, new Color(0,0,0,-0.05));
         
         if(drawNormalMouse.drawData[key].radius <= 0){
             drawNormalMouse.drawData.splice(key,1);
@@ -151,9 +158,7 @@ function drawFrame(){
     for(let key in drawPointerMouse.drawData){
         drawPointerMouse.drawData[key].Draw();
 
-        drawPointerMouse.drawData[key].radius += 3;
-        drawPointerMouse.drawData[key].rotate += 4;
-        drawPointerMouse.drawData[key].color = new Color(256,256,256,drawPointerMouse.drawData[key].color.a - 0.05);
+        drawPointerMouse.ChangeDrawData(key,0,0,3,4, new Color(0,0,0,-0.05));
         
         if(drawPointerMouse.drawData[key].radius <= 0){
             drawPointerMouse.drawData.splice(key,1);
