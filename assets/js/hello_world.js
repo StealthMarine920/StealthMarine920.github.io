@@ -6,10 +6,15 @@ class Point {
 }
 
 class Circle {
-    constructor(x, y, r) {
+    centerX
+    centerY
+    radius
+    color
+    constructor(x, y, r, c) {
         this.centerX = x;
         this.centerY = y;
         this.radius = r;
+        this.color = c;
     }
     GetPointOnCircle(startAngle, angle) {
         let x = this.centerX;
@@ -22,6 +27,13 @@ class Circle {
                 y + (r * Math.sin((angle * i + startAngle) * Math.PI / 180))))
         }
         return list
+    }
+    Draw(){
+        ctx.beginPath();
+        ctx.arc(this.centerX,this.centerY,this.radius,0,2*Math.PI);
+        ctx.closePath();
+        ctx.strokeStyle = this.color.RGBA();
+        ctx.stroke();
     }
 }
 
@@ -75,7 +87,7 @@ class Triangle{
     }
     Draw(){
         let angle = 120;
-        let circle = new Circle(this.posX, this.posY, this.radius);
+        let circle = new Circle(this.posX, this.posY, this.radius, null);
         var path = circle.GetPointOnCircle(this.rotate, angle);
 
         ctx.beginPath();
@@ -106,7 +118,7 @@ class DrawMouse{
         this.startRotation = startRotation;
         this.startColor = startColor;
     }
-    PushNewByMousePos(x, y){
+    PushNewTriangleByMousePos(x, y){
         this.drawData.push(new Triangle(x,y,this.startRadius,this.startRotation,this.startColor));
     }
     ChangeDrawData(index,p_x,p_y,p_radius,p_rotate,p_color){
@@ -129,13 +141,15 @@ var mouseStatus = MouseStatus.normal;
 
 function drawFrame(){
     ctx.clearRect(0,0,canvas.width,canvas.height);
+    // let circle = new Circle(500, 500, 100, new Color(0,0,0,1.0));
+    // circle.Draw();
 
     switch(mouseStatus){
         case MouseStatus.normal:
-            drawNormalMouse.PushNewByMousePos(mouseX,mouseY);
+            drawNormalMouse.PushNewTriangleByMousePos(mouseX,mouseY);
             break;
         case MouseStatus.pointer:
-            drawPointerMouse.PushNewByMousePos(mouseX,mouseY);
+            drawPointerMouse.PushNewTriangleByMousePos(mouseX,mouseY);
             break;
         case MouseStatus.click:
             break;
