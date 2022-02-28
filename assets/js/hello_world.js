@@ -6,15 +6,12 @@ class Point {
 }
 
 class Circle {
-    centerX
-    centerY
-    radius
-    color
-    constructor(x, y, r, c) {
-        this.centerX = x;
-        this.centerY = y;
-        this.radius = r;
-        this.color = c;
+    constructor(posX, posY, radius, color, fillType) {
+        this.centerX = posX;
+        this.centerY = posY;
+        this.radius = radius;
+        this.color = color;
+        this.fillType = fillType;
     }
     GetPointOnCircle(startAngle, angle) {
         let x = this.centerX;
@@ -38,10 +35,6 @@ class Circle {
 }
 
 class Color {
-    r
-    g
-    b
-    a
     constructor(r,g,b,a){
         this.r = r;
         this.g = g;
@@ -57,17 +50,17 @@ class Color {
 }
 
 class Triangle{
-    constructor(posX,posY,radius,rotate,color,type){
+    constructor(posX,posY,radius,rotate,color,fillType){
         this.posX = posX;
         this.posY = posY;
         this.radius = radius;
         this.rotate = rotate;
         this.color = color;
-        this.type = type;
+        this.fillType = fillType;
     }
     Draw(){
         let angle = 120;
-        let circle = new Circle(this.posX, this.posY, this.radius, null);
+        let circle = new Circle(this.posX, this.posY, this.radius, null, null);
         var path = circle.GetPointOnCircle(this.rotate, angle);
 
         ctx.beginPath();
@@ -77,8 +70,8 @@ class Triangle{
             ctx.lineTo(path[i].x, path[i].y);
         }
         ctx.closePath();
-        ctx[this.type + "Style"] = this.color.RGBA();
-        ctx[this.type]();
+        ctx[this.fillType + "Style"] = this.color.RGBA();
+        ctx[this.fillType]();
     }
 }
 
@@ -91,14 +84,17 @@ class MouseStatus{
 
 class DrawMouse{
     drawData = []
-    constructor(startRadius,startRotation,startColor,type){
+    constructor(startRadius,startRotation,startColor,fillType){
         this.startRadius = startRadius;
         this.startRotation = startRotation;
         this.startColor = startColor;
-        this.type = type;
+        this.fillType = fillType;
     }
     PushNewTriangleByMousePos(x, y){
-        this.drawData.push(new Triangle(x,y,this.startRadius,this.startRotation,this.startColor,this.type));
+        this.drawData.push(new Triangle(x, y, this.startRadius, this.startRotation, this.startColor, this.fillType));
+    }
+    PushNewCircleByMousePos(x, y){
+        this.drawData.push(new Circle(x, y, this.startRadius, this.startColor, null));
     }
     ChangeDrawData(index,p_x,p_y,p_radius,p_rotate,p_color){
         this.drawData[index].x += p_x;
@@ -118,8 +114,12 @@ class DrawMouse{
         this.drawData[index].y = n_y;
     }
     ChangeDrawDataRotation(index,n_r){
-        this.drawData[index].rotate = n_r;
-        this.CheckRotate(index);
+        if(typeof(this.drawData[index].rotate) != "undefined"){
+            this.drawData[index].rotate = n_r;
+            this.CheckRotate(index);
+        }else{
+            console.log("Type of " + typeof(this.drawData[index]) + " has no rotate");
+        }
     }
     CheckRotate(index){
         if(this.drawData[index].rotate > 360){
