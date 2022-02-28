@@ -56,22 +56,6 @@ class Color {
     }
 }
 
-/*function drawTriangle(x, y, r, rotate, color) {
-    let angle = 120;
-    let circle = new Circle(x, y, r);
-    var path = circle.GetPointOnCircle(rotate, angle);
-
-    ctx.beginPath();
-    ctx.lineWidth = 2
-    ctx.moveTo(path[0].x, path[0].y);
-    for (let i = 1; i < path.length; i++) {
-        ctx.lineTo(path[i].x, path[i].y);
-    }
-    ctx.closePath();
-    ctx.strokeStyle = color;
-    ctx.stroke();
-}*/
-
 class Triangle{
     constructor(posX,posY,radius,rotate,color,type){
         this.posX = posX;
