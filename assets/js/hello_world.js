@@ -122,11 +122,15 @@ class DrawMouse{
         }
     }
     CheckRotate(index){
-        if(this.drawData[index].rotate > 360){
-            this.drawData[index].rotate -= 360;
-        }
-        if(this.drawData[index].rotate < -360){
-            this.drawData[index].rotate += 360;
+        if(typeof(this.drawData[index].rotate) != "undefined"){
+            if(this.drawData[index].rotate > 360){
+                this.drawData[index].rotate -= 360;
+            }
+            if(this.drawData[index].rotate < -360){
+                this.drawData[index].rotate += 360;
+            }
+        }else{
+            console.log("Type of " + typeof(this.drawData[index]) + " has no rotate");
         }
     }
 }
