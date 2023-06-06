@@ -1,0 +1,3 @@
+[submodule "assets/js/canvas-nest"]
+	path = assets/js/canvas-nest
+	url = https://github.com/hustcc/canvas-nest.js.git
