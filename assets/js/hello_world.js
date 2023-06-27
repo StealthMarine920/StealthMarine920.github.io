@@ -5,6 +5,21 @@ class Point {
     }
 }
 
+class Color {
+    constructor(r,g,b,a){
+        this.r = r;
+        this.g = g;
+        this.b = b;
+        this.a = a;
+    }
+    RGBA(){
+        return "rgba(" + this.r + "," + this.g + "," + this.b + "," + this.a + ")";
+    }
+    RGB(){
+        return "rgb(" + this.r + "," + this.g + "," + this.b + ")";
+    }
+}
+
 class Circle {
     constructor(posX, posY, radius, color, fillType) {
         this.centerX = posX;
@@ -31,21 +46,6 @@ class Circle {
         ctx.closePath();
         ctx.strokeStyle = this.color.RGBA();
         ctx.stroke();
-    }
-}
-
-class Color {
-    constructor(r,g,b,a){
-        this.r = r;
-        this.g = g;
-        this.b = b;
-        this.a = a;
-    }
-    RGBA(){
-        return "rgba(" + this.r + "," + this.g + "," + this.b + "," + this.a + ")";
-    }
-    RGB(){
-        return "rgb(" + this.r + "," + this.g + "," + this.b + ")";
     }
 }
 
